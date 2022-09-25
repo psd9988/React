@@ -6,6 +6,7 @@ export function Todo() {
 
     const [todo, setTodo] = useState("");
     const [saveToDoList, setTodoList] = useState([]);
+    const [inEditMode, setEditMode] = useState(false);
 
     const changedInput = (e) => {
         setTodo(e.target.value);
@@ -18,21 +19,47 @@ export function Todo() {
         setTodo('')
     }
 
+    const delteBtn = (e) => {
+        e.preventDefault()
+        let target = e.target;
+        let parent = target.parentElement
+        parent.remove()
+    }
+
+    const doubleClickEditBtn = (e) => {
+        e.preventDefault()
+        let target = e.target;
+        let parent = target.parentElement
+        parent.childNodes[0].contentEditable = 'true'
+        target.innerText = 'Done'
+        parent.childNodes[0].style.border = "2px solid black"
+        parent.childNodes[0].style.borderRadius = '5px'
+    }
+
+    const oneClickEditBtn = (e) => {
+        e.preventDefault()
+        let target = e.target;
+        let parent = target.parentElement
+        parent.childNodes[0].contentEditable = 'false'
+        target.innerText = 'DoubleClick to edit'
+        parent.childNodes[0].style.border = "none"
+    }
+
     return (
         <div className='container'>
             <h1 className="mainHeading">My To Do App</h1>
             <form onSubmit={formSubmitFunc}>
 
                 <input type="text" name="addToDo" value={todo} onChange={changedInput} />
-                <button>Add todo</button>
-
+                <button className='todoBtn'>Add todo</button>
                 {
                     saveToDoList.map((eachToDo, index) =>
                     (
-                        <div className='displayContainer' key={`todo ${index}`}>
-                            <h3>{eachToDo}</h3>
-                            <button>Delete</button>
-                            <button>Edit</button>
+
+                        <div className='displayContainer' id={index} key={`todo ${index}`}>
+                            <h3 >{eachToDo}</h3>
+                            <button onClick={delteBtn}>Delete</button>
+                            <button className='editable' onClick={oneClickEditBtn} onDoubleClick={doubleClickEditBtn}>DoubleClick to edit</button>
                         </div>
                     ))
                 }
