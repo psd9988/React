@@ -6,7 +6,7 @@ export function Todo() {
 
     const [todo, setTodo] = useState("");
     const [saveToDoList, setTodoList] = useState([]);
-    const [inEditMode, setEditMode] = useState(false);
+   
 
     const changedInput = (e) => {
         setTodo(e.target.value);
@@ -14,9 +14,11 @@ export function Todo() {
 
     const formSubmitFunc = (e) => {
         e.preventDefault();
-        const newToDo = todo;
-        setTodoList([...saveToDoList, newToDo])
-        setTodo('')
+        if(todo.length > 0){
+            const newToDo = todo;
+            setTodoList([...saveToDoList, newToDo])
+            setTodo('')
+        }
     }
 
     const delteBtn = (e) => {
@@ -55,7 +57,6 @@ export function Todo() {
                 {
                     saveToDoList.map((eachToDo, index) =>
                     (
-
                         <div className='displayContainer' id={index} key={`todo ${index}`}>
                             <h3 >{eachToDo}</h3>
                             <button onClick={delteBtn}>Delete</button>
